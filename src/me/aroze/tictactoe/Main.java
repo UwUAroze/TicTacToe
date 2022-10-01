@@ -21,7 +21,7 @@ public class Main {
         return switch (a) {
             case 0 -> 'X';
             case 1 -> 'O';
-            default -> '.';
+            default -> ' ';
         };
     }
 
@@ -59,7 +59,10 @@ public class Main {
         System.out.println("Ongoing Game:");
         for (int x = 0; x < 3; x++) {
             for (int y = 0; y < 3; y++) {
-                System.out.print(getChar(matrix[x][y]));
+                String format = "\u001b[0m";
+                if (x != 2) format = "\u001b[4m";
+                System.out.print(format + getChar(matrix[x][y]));
+                if (y != 2) System.out.print("|");
             } System.out.println();
         }
     }
