@@ -45,6 +45,11 @@ public class Main {
         return false;
     }
 
+    static boolean checkForDraw() {
+        for (int x = 0; x < 3; x++) for (int y = 0; y < 3; y++) if (matrix[x][y] == -1) return false;
+        return true;
+    }
+
     static void printReferenceBoard() {
         System.out.println("Reference board:");
         System.out.println("123\n456\n789");
@@ -110,6 +115,13 @@ public class Main {
             printMatrix();
             System.out.println("\nGame Over!");
             System.out.println("Player " + (currentPlayer) + " ("+ getChar(currentPlayer) + ") won!");
+            System.exit(0);
+        }
+
+        if (checkForDraw()) {
+            printMatrix();
+            System.out.println("\nGame Over!");
+            System.out.println("It's a draw! There were no remaining locations left in the board");
             System.exit(0);
         }
 
