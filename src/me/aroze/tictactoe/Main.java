@@ -1,5 +1,6 @@
 package me.aroze.tictactoe;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -8,11 +9,13 @@ public class Main {
 
     public static void main(String[] args) {
         resetMatrix();
+        printReferenceBoard();
+        System.out.println();
         printMatrix();
         while (true) nextTurn();
     }
 
-    static void clearTerminal() {System.out.println("\n".repeat(100)); }
+    static void clearTerminal() { System.out.println("\n".repeat(50)); }
 
     static char getChar(int a) {
         return switch (a) {
@@ -64,13 +67,41 @@ public class Main {
         matrix[posX][posY] = player;
     }
 
+    static int getMatrix(int a) {
+        int posX = Math.floorDiv(a-1, 3);
+        int posY = a-(3*posX)-1;
+        return matrix[posX][posY];
+    }
+
+    static int getInput() {
+        Scanner scanner = new Scanner(System.in);
+        int a;
+        try { a = scanner.nextInt(); }
+        catch (InputMismatchException e) {
+            System.out.print("Invalid input. Please try again: ");
+            return getInput();
+        }
+        return a;
+    }
+
     static void nextTurn() {
         if (currentPlayer == 0) currentPlayer = 1;
         else currentPlayer = 0;
 
         System.out.print("\nPlayer " + (currentPlayer) + " ("+ getChar(currentPlayer) + ")'s turn: Pick a location (1-9): ");
-        Scanner scanner = new Scanner(System.in);
-        int a = scanner.nextInt();
+
+        int a = getInput();
+
+        while (a < 1 || a > 9) {
+            System.out.print("That's not a number between 1 and 9. Please try again: ");
+            a = getInput();
+        }
+
+        while (getMatrix(a) != -1) {
+            System.out.print("That location is already taken. Pick another: ");
+            a = getInput();
+        }
+
         setMatrix(a, currentPlayer);
 
         clearTerminal();
